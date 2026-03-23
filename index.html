@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Serverless WebRTC Screen Share</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; padding: 20px; background-color: #f0f2f5;}
+        .container { max-width: 1000px; margin: 0 auto; }
+        .row { display: flex; gap: 20px; }
+        .col { flex: 1; }
+        textarea { width: 100%; height: 100px; margin-bottom: 10px; font-family: monospace; border: 1px solid #ccc; padding: 5px; box-sizing: border-box; border-radius: 4px; resize: none;}
+        video { width: 100%; min-height: 250px; background: #000; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        button { padding: 12px 15px; width: 100%; font-weight: bold; background: #007bff; color: white; border: none; border-radius: 6px; cursor: pointer; transition: 0.2s;}
+        button:hover { background: #0056b3; }
+        button.success { background: #28a745; }
+        button.success:hover { background: #218838; }
+        h3 { margin-top: 0; color: #333; border-bottom: 2px solid #ddd; padding-bottom: 10px;}
+        .box { padding: 20px; border: 1px solid #e1e4e8; border-radius: 12px; margin-bottom: 20px; background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.05);}
+        label { display: block; font-weight: bold; color: #555; margin-bottom: 5px; font-size: 0.9em;}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 style="text-align: center; color: #1a1a1a;">Serverless Protocol Screen Share</h2>
+        <p style="text-align: center; color: #666; margin-bottom: 30px;">Direct 1-to-1 WebRTC streaming using manual code copying. No intermediate server required. Hardware acceleration is disabled.</p>
+        
+        <div class="row">
+            <div class="col box">
+                <h3>🍿 Built-In Netflix Browser</h3>
+                <p style="font-size: 0.9em; color:#666;">Host: Log into Netflix below and play the movie. Because we disabled Hardware Acceleration, the video will not be blacked out.</p>
+                <webview id="netflix-webview" src="https://bitmovin.com/demos/drm" style="width:100%; height:500px; border-radius: 8px; border: 1px solid #ccc;"></webview>
+            </div>
+        </div>
+        
+        <div class="row">
+            <!-- Host Controls -->
+            <div class="col box">
+                <h3>🖥️ HOST (Sender)</h3>
+                <p style="font-size: 0.9em; color:#666;">You are sharing your screen. Start here.</p>
+                <button id="createOfferBtn">1. Capture Screen & Create Offer Code</button>
+                <br><br>
+                <label>Send this code to the Viewer:</label>
+                <textarea id="localOfferText" readonly placeholder="Waiting to generate offer..."></textarea>
+                
+                <hr style="border: 0; border-top: 1px dashed #ccc; margin: 15px 0;">
+                
+                <label>Paste the Viewer's Answer Code here:</label>
+                <textarea id="remoteAnswerText" placeholder="Paste the Viewer's Answer Code here..."></textarea>
+                <button id="acceptAnswerBtn" class="success">2. Accept Answer & Connect</button>
+            </div>
+
+            <!-- Viewer Controls -->
+            <div class="col box">
+                <h3>👀 VIEWER (Receiver)</h3>
+                <p style="font-size: 0.9em; color:#666;">You are watching the screen. The Host must start first.</p>
+                <label>Paste the Host's Offer Code here:</label>
+                <textarea id="remoteOfferText" placeholder="Paste the Host's Offer Code here..."></textarea>
+                <button id="createAnswerBtn">1. Create Answer Code</button>
+                
+                <hr style="border: 0; border-top: 1px dashed #ccc; margin: 15px 0;">
+
+                <label>Send this Answer code back to the Host:</label>
+                <textarea id="localAnswerText" readonly placeholder="Waiting to generate answer..."></textarea>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <h3 style="text-align: center;">Local Screen Preview (Host)</h3>
+                <video id="localVideo" autoplay muted></video>
+            </div>
+            <div class="col">
+                <h3 style="text-align: center;">Incoming Remote Stream (Viewer)</h3>
+                <video id="remoteVideo" autoplay controls></video>
+            </div>
+        </div>
+    </div>
+
+    <script src="renderer.js"></script>
+</body>
+</html>
