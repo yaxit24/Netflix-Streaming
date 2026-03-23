@@ -415,6 +415,7 @@ This project exists for **one reason**: to demonstrate and document a known arch
 6. [HDCP 2.2 Specification](https://www.digital-cp.com/hdcp-specifications)
 7. [Netflix Tech Blog — Content Security](https://netflixtechblog.com/)
 8. [CENC (Common Encryption) — ISO/IEC 23001-7](https://www.iso.org/standard/68042.html)
+9. [Medium-Blog:I-broke-netflixs-screen-protection-in-one-line-of-code](https://medium.com/@ysmtb24/i-broke-netflixs-screen-protection-in-one-line-of-code-9717f2e22062)
 
 ---
 
