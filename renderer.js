@@ -1,18 +1,29 @@
 const { ipcRenderer } = require('electron');
-
+// 1. Host captures screen
+// 2. Creates offer
+// 3. ICE gathers network info
+//ICE = Interactive Connectivity Establishment - How can two devices find the best way to connect?
+// STUN Server (used here) STUN = Session Traversal Utilities for NAT -- Tell me my public IP address( Laptop, Public IP are differnt )
+// NAT: a networking technique that allows multiple devices in a private network to share a single public IP address for internet access
+// 4. Offer sent to viewer
+// 5. Viewer creates answer
+// 6. ICE gathers again
+// 7. Answer sent to host
+// 8. Connection established
+// 9. Screen streams live (P2P)
 const config = {
-    iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
+    iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] /// it is free STUN server by google for dev for the WebRTc. 
 };
 
-let peerConnection;
+let peerConnection; 
 let localStream;
 
-// HTML Elements
+// HTML Elements button linking.
 const createOfferBtn = document.getElementById('createOfferBtn');
 const localOfferText = document.getElementById('localOfferText');
 const remoteAnswerText = document.getElementById('remoteAnswerText');
 const acceptAnswerBtn = document.getElementById('acceptAnswerBtn');
-
+// document.getElementById =  bridge between your HTML UI and JavaScript logic
 const remoteOfferText = document.getElementById('remoteOfferText');
 const createAnswerBtn = document.getElementById('createAnswerBtn');
 const localAnswerText = document.getElementById('localAnswerText');
@@ -24,7 +35,7 @@ const remoteVideo = document.getElementById('remoteVideo');
 function setupPeerConnection() {
     const pc = new RTCPeerConnection(config);
     
-    // Listen for remote tracks (Viewer side)
+    // Listen for remote tracks (Viewer side) Event Listener 
     pc.ontrack = (event) => {
         console.log("Received remote track from Host");
         remoteVideo.srcObject = event.streams[0];
